@@ -1,0 +1,146 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+// Written by Bryan Mulhall 21/12/2015
+namespace CarsDatabase
+{
+    public partial class frmCars : Form
+    {
+
+        public int index = 0;
+        private ArrayList carList = new ArrayList();
+
+        public frmCars()
+        {
+            InitializeComponent();
+            Connect();
+            Populate(index);
+        }
+
+        public void Connect()
+        {
+            string connection = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=c:\\users\\user\\documents\\visual studio 2015\\Projects\\CarsDatabase\\CarsDatabase\\Hire.mdf;Integrated Security=True;Connect Timeout=30";
+            string command = "SELECT VehicleRegNo, Make, EngineSize, DateRegistered, RentalPerDay, Available from dbo.tblCar";
+            SqlConnection con = new SqlConnection(connection);
+            SqlCommand sc = new SqlCommand(command, con);
+            int parameter = 5;
+            sc.Parameters.AddWithValue("@VehicleRegNo", parameter);
+
+            try
+            {
+                con.Open();
+                SqlDataReader sdr = sc.ExecuteReader();
+                while (sdr.Read())
+                {
+                    Car c = new Car(sdr[0].ToString(), sdr[1].ToString(), sdr[2].ToString(), Convert.ToDateTime(sdr[3].ToString()), sdr[4].ToString(), Convert.ToBoolean(sdr[5].ToString()));
+                    carList.Add(c);
+                }
+            }
+            catch (SqlException ex)
+            {
+
+                Console.WriteLine(ex.StackTrace);
+            }
+
+            con.Close();
+
+        }
+
+        public void Populate(int index)
+        {
+            txtVehicleReg.Text = ((Car)carList[index]).GetVehicleReg().Trim();
+            txtMake.Text = ((Car)carList[index]).GetMake().Trim();
+            txtEngineSize.Text = ((Car)carList[index]).GetEngineSize().Trim();
+            txtDateReg.Text = ((Car)carList[index]).GetDate().ToString("dd/MM/yyyy");
+            txtRental.Text = ((Car)carList[index]).GetRental().Trim();
+
+            if (cbAvailable.Checked)
+            {
+
+            }
+            else
+            {
+
+            }
+
+            txtIndex.Text = index + 1 + " of " + carList.Count;
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            frmSearch f = new frmSearch();
+            f.ShowDialog();
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void btnFirst_Click(object sender, EventArgs e)
+        {
+            Populate(0);
+        }
+
+        private void btnPrevious_Click(object sender, EventArgs e)
+        {
+            if (index != 0)
+            {
+                index--;
+                Populate(index);
+            }
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if (index != carList.Count)
+            {
+                index++;
+                Populate(index);
+            }
+        }
+
+        private void btnLast_Click(object sender, EventArgs e)
+        {
+            Populate(carList.Count - 1);
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            Car newCar = new Car(txtVehicleReg.Text, txtMake.Text, txtEngineSize.Text,
+            Convert.ToDateTime(txtDateReg.Text), txtRental.Text,
+            cbAvailable.Checked);
+            carList[index] = newCar;
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            Car newCar = new Car(txtVehicleReg.Text, txtMake.Text, txtEngineSize.Text, Convert.ToDateTime(txtDateReg.Text.ToString()), txtRental.Text.ToString(), cbAvailable.Checked);
+            carList.Add(newCar);
+            txtIndex.Text = (index + 1) + " of " + carList.Count;
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            carList.RemoveAt(index);
+            Populate(0);
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Populate(index);
+        }
+    }
+}
+
+
+
+
