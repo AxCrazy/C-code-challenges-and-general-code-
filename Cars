@@ -1,0 +1,92 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarsDatabase
+{
+    class Car
+    {
+        private string vehicleRegistration;
+        private string make;
+        private string engineSize;
+        private DateTime dateRegistered;
+        private string rental;
+        private bool isAvailable;
+
+    public Car()
+        {
+            vehicleRegistration = null;
+            make = null;
+            engineSize = null;
+            dateRegistered = new DateTime();
+            rental = "0.0";
+            isAvailable = false;
+        }
+
+    public Car(string newVehicle, string newMake, string newEngine, DateTime newDate, string newRental, bool newAvailable)
+        {
+            vehicleRegistration = newVehicle;
+            make = newMake;
+            engineSize = newEngine;
+            dateRegistered = newDate;
+            rental = newRental;
+            isAvailable = newAvailable;
+        }
+
+    public string GetVehicleReg()
+        {
+            return vehicleRegistration;
+        }
+    public void SetVehicle(string arg)
+        {
+            vehicleRegistration = arg;
+        }
+
+    public string GetMake()
+        {
+            return make;
+        }
+    public void SetMake(string arg)
+        {
+            make = arg;
+        }
+    
+    public string GetEngineSize()
+        {
+            return engineSize;
+        }
+    public void SetEngineSize(string arg)
+        {
+            engineSize = arg;
+        }
+    
+    public DateTime GetDate()
+        {
+            return dateRegistered;
+        }
+    public void SetDate(DateTime arg)
+        {
+            dateRegistered = arg;
+        }
+
+    public string GetRental()
+        {
+            return rental;
+        }
+    public void SetRental(string arg)
+        {
+            rental = arg;
+        }
+
+    public bool GetAvailable()
+        {
+            return isAvailable;
+        }
+    public void SetAvailable(bool arg)
+        {
+            isAvailable = arg;
+        }
+    }
+}
