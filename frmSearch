@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+// Written by Bryan Mulhall
+namespace CarsDatabase
+{
+    public partial class frmSearch : Form
+    {
+        public frmSearch()
+        {
+            InitializeComponent();
+            hireDataSet = new HireDataSet();
+        }
+
+        private void frmSearch_Load(object sender, EventArgs e)
+        {
+            // TODO: This line of code loads data into the 'hireDataSet.tblCar' table. You can move, or remove it, as needed.
+            this.tblCarTableAdapter.Fill(this.hireDataSet.tblCar);
+
+        }
+
+        private void btnRun_Click(object sender, EventArgs e)
+        {
+            if(cbField.Text == "Make" && cbOperator.Text == "==")
+            {
+                try
+                {
+                    this.tblCarTableAdapter.SearchMake(this.hireDataSet.tblCar, makeToolStripTextBox.Text);
+                }
+                catch (System.Exception ex)
+                {
+                    System.Windows.Forms.MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+
+
+        private void searchMakeToolStripButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.tblCarTableAdapter.SearchMake(this.hireDataSet.tblCar, makeToolStripTextBox.Text);
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.Message);
+            }
+
+        }
+    }
+}
